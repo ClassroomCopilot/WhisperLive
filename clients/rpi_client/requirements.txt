@@ -1,0 +1,7 @@
+PyAudio
+ffmpeg-python
+scipy
+websocket-client
+python-dotenv
+requests
+alsa-utils

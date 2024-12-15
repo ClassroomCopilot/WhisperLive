@@ -1,0 +1,28 @@
+services:
+  cc_whisperlive:
+    runtime: nvidia
+    build:
+      context: ./backend/whisperlive/server
+      dockerfile: Dockerfile.tensorrt  # Override to use Dockerfile.tensorrt
+      args:
+        WHISPERLIVE_PORT: ${WHISPERLIVE_PORT}
+    env_file:
+        - ./.env
+    environment:
+      WHISPERLIVE_PORT: ${WHISPERLIVE_PORT}
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility
+    volumes:
+      - data_volume:/data
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    ports:
+      - ${WHISPERLIVE_PORT}:${WHISPERLIVE_PORT}
+    networks:
+      - app-network
+
